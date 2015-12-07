@@ -3,9 +3,9 @@
 
 This Docker image lets you run a BEdita instance easily and quickly, without need to configure a Webserver, installing a database, or struggling to set the correct file permissions.
 
-Even though it is meant only for **development purposes**, this might also serve as a *proof of concept* for running BEdita in a dockerized environment.
+Even though it is meant only for **development purposes**, this might also serve as a _proof of concept_ for running BEdita in a dockerized environment.
 
-## What's in this image
+## What’s in this image
 
 In this image you can expect to find:
 
@@ -24,11 +24,11 @@ In this image you can expect to find:
 5. Navigate to http://manage.192.168.99.100.xip.io:8083 to access the backend (default user: `bedita` / `bedita`)
 6. Navigate to http://192.168.99.100:8083/api/v1 to see a list of available REST API endpoints.
 
-Be sure to replace any instance of `192.168.99.100` inside `docker-compose.yml` and in the URLs above with the actual IP of your Docker machine (if you're running Boot2Docker on OS X, the default value should be fine).
+Be sure to replace any instance of `192.168.99.100` inside `docker-compose.yml` and in the URLs above with the actual IP of your Docker machine (if you’re running Boot2Docker on OS X, the default value should be fine).
 
-### The “hard” way
+### The “hardcore” way
 
-First of all, you'll need a MySQL container up and running:
+First of all, you’ll need a MySQL container up and running:
 
 ```
 docker run -d --name bedita_db -v /var/lib/mysql \
@@ -39,7 +39,7 @@ docker run -d --name bedita_db -v /var/lib/mysql \
     mysql:5.6
 ```
 
-Once the database container has started, you can start the BEdita container running the following command:
+Once the database container has started, you can run the BEdita container with the following command:
 
 ```
 docker run -d --name bedita -v /var/www/bedita/bedita-app/webroot/files \
@@ -62,32 +62,32 @@ At this point, you should be able to navigate to http://manage.192.168.99.100.xi
 
 ## Available options
 
-### `BEDITA_MYSQL_HOST`
+### `BEDITA_CORE_HOST` **(required)**
+
+The host you want to use to access BEdita backend. Any other host pointing to the same IP will default to the frontend virtual host.
+
+For instance, if your Docker machine is running on IP `192.168.99.100`, you might set `-e BEDITA_CORE_HOST=manage.192.168.99.100.xip.io`.
+
+### `BEDITA_MYSQL_HOST` **(required)**
 
 This environment variable should be set to the host of the MySQL server you wish to use with your BEdita instance.
 
 For instance, if you linked a MySQL Docker container using the option `--link my_mysql_container:db`, you should set `-e BEDITA_MYSQL_HOST=db`.
 
-### `BEDITA_MYSQL_NAME`
+### `BEDITA_MYSQL_NAME` **(required)**
 
 This is the name of the database that you want to be used by BEdita.
 
 For instance, if you are running the official MySQL Docker image with the option `-e MYSQL_DATABASE=bedita_docker`, you might want to run the BEdita Docker image with the option `-e BEDITA_MYSQL_NAME=bedita_docker`.
 
-### `BEDITA_MYSQL_USER`, `BEDITA_MYSQL_PASS`
+### `BEDITA_MYSQL_USER`, `BEDITA_MYSQL_PASS` **(required)**
 
 These variables are used to pass MySQL user credentials.
 
 For instance, if you are running the official MySQL Docker image with the options `-e MYSQL_USER=bedita -e MYSQL_PASSWORD=my_bedita_password`, you will probably want to run the BEdita Docker image with the options `-e BEDITA_MYSQL_USER =bedita -e BEDITA_MYSQL_PASS =my_bedita_password`.
 
-### `BEDITA_DEBUG`
+### `BEDITA_DEBUG` _(optional)_
 
 Use this variable to set BEdita debug level.
 
 This can be either `0` (debug disabled), `1` (errors and warnings displayed) or `2` (debug info displayed). If omitted, this is assumed to be `0`.
-
-### `BEDITA_CORE_HOST`
-
-The host you want to use to access BEdita backend. Any other host pointing to the same IP will default to the frontend virtual host.
-
-For instance, if your Docker machine is running on IP `192.168.99.100`, you might set `-e BEDITA_CORE_HOST=manage.192.168.99.100.xip.io`.
