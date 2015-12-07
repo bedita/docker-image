@@ -33,7 +33,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-    Configure::write('debug', getenv('BEDITA_DEBUG') ?: 0);
+    Configure::write('debug', (int) getenv('BEDITA_DEBUG') ?: 0);
 
 /**
  * CakePHP Log Level:

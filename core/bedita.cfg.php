@@ -23,9 +23,7 @@
 $config['projectName'] = 'BID - BEdita-in-Docker';
 
 // BEdita URL
-$_beditaCorePort = getenv('BEDITA_CORE_PORT') ?: 80;
-$config['beditaUrl'] = 'http://' . getenv('BEDITA_CORE_HOST') . ($_beditaCorePort != 80 ? ":{$_beditaCorePort}" : '');
-unset($_beditaCorePort);
+$config['beditaUrl'] = 'http://' . getenv('BEDITA_CORE_HOST') . ($_SERVER['SERVER_PORT'] != 80 ? ":{$_SERVER['SERVER_PORT']}" : '');
 
 // Multimedia - Filesystem Path
 $config['mediaRoot'] = BEDITA_CORE_PATH . DS . 'webroot' . DS . 'files';
