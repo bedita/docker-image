@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if [ -z "${BEDITA_CORE_HOST}" ]; then
+    >&2 echo 'Did you forget to set the BEDITA_CORE_HOST environment variable?'
+    exit 1
+fi
+
 if [ ! -f /var/www/bedita/bedita-app/config/core.php ] && [ "$1" != '/bin/bash' ]; then
     while ! mysqladmin ping -h"${BEDITA_MYSQL_HOST}" --silent; do
         echo 'Waiting for MySQL server...'

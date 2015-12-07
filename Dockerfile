@@ -23,11 +23,6 @@ COPY frontend/* /var/www/bedita/frontends/bootstrap/config/
 # Create Apache virtual host.
 COPY apache/* /etc/apache2/sites-enabled/
 
-# Config.
-ENV BEDITA_CORE_HOST manage.bedita.local
-ENV BEDITA_CORE_PORT 80
-ENV BEDITA_DEBUG 0
-
 # Entrypoint.
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
