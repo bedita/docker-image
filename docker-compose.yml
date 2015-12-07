@@ -12,7 +12,6 @@ bedita:
   image: bedita/bedita
   environment:
     - BEDITA_CORE_HOST=manage.192.168.99.100.xip.io
-    - BEDITA_CORE_PORT=8083
     - BEDITA_DEBUG=2
     - BEDITA_MYSQL_HOST=mysql
     - BEDITA_MYSQL_USER=bedita
