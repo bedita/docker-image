@@ -84,7 +84,7 @@ For instance, if you are running the official MySQL Docker image with the option
 
 These variables are used to pass MySQL user credentials.
 
-For instance, if you are running the official MySQL Docker image with the options `-e MYSQL_USER=bedita -e MYSQL_PASSWORD=my_bedita_password`, you will probably want to run the BEdita Docker image with the options `-e BEDITA_MYSQL_USER =bedita -e BEDITA_MYSQL_PASS =my_bedita_password`.
+For instance, if you are running the official MySQL Docker image with the options `-e MYSQL_USER=bedita -e MYSQL_PASSWORD=my_bedita_password`, you will probably want to run the BEdita Docker image with the options `-e BEDITA_MYSQL_USER=bedita -e BEDITA_MYSQL_PASS=my_bedita_password`.
 
 ### `BEDITA_DEBUG` _(optional)_
 
