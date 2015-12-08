@@ -1,5 +1,4 @@
-# BEdita official Docker image
-[![Docker Pulls](https://img.shields.io/docker/pulls/bedita/bedita.svg)](https://hub.docker.com/r/bedita/bedita/)
+# BEdita official Docker image [![Docker Pulls](https://img.shields.io/docker/pulls/bedita/bedita.svg)](https://hub.docker.com/r/bedita/bedita/)
 
 This Docker image lets you run a BEdita instance easily and quickly, without need to configure a Webserver, installing a database, or struggling to set the correct file permissions.
 
@@ -14,6 +13,8 @@ In this image you can expect to find:
  - The BEdita [Bootstrap frontend](https://github.com/bedita/bootstrap) already installed and available, ready to be used as a REST API frontend (see `GET /api/v1` for available endpoints).
 
 ## Getting started
+
+Before getting started, you should obviously ensure you have a recent version of [Docker](https://www.docker.com/) installed on your machine.
 
 ### The easy way
 
@@ -61,6 +62,8 @@ Also, `BEDITA_CORE_HOST` should be set to a host that points to your Docker mach
 At this point, you should be able to navigate to http://manage.192.168.99.100.xip.io:8083 (or whatever you set your host to) and see your BEdita CMS login page (default user is `bedita` with password `bedita`). By using any other hostname that points to the same IP, using port `8083`, you will access your frontend. Hence, browsing http://192.168.99.100:8083/api/v1 you should see a JSON response listing the available REST API endpoints.
 
 ## Available options
+
+The following options should be passed to the container as environment variables using the `-e` flag.
 
 ### `BEDITA_CORE_HOST` **(required)**
 
