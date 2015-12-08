@@ -61,6 +61,26 @@ Also, `BEDITA_CORE_HOST` should be set to a host that points to your Docker mach
 
 At this point, you should be able to navigate to http://manage.192.168.99.100.xip.io:8083 (or whatever you set your host to) and see your BEdita CMS login page (default user is `bedita` with password `bedita`). By using any other hostname that points to the same IP, using port `8083`, you will access your frontend. Hence, browsing http://192.168.99.100:8083/api/v1 you should see a JSON response listing the available REST API endpoints.
 
+## Logging
+
+Docker containers should write logs to the standard output. In order to accomplish this goal, BEdita log files are `tail`'d to the standard output with the help of [Supervisor](http://supervisord.org/) and [supervisor-stdout](https://github.com/coderanger/supervisor-stdout).
+
+To see Apache and BEdita logs from a container named `bedita`, just run:
+
+```
+docker logs -f bedita
+```
+
+Or, if you're running this container via Docker Compose:
+
+```
+docker-compose logs bedita
+```
+
+Unfortunately, logs are buffered, so it might take a short while before logged events are actually displayed to your console.
+
+Also, be careful not to remove log files from the BEdita backend Admin module, or `tail` will stop working, preventing later logs from showing in your console.
+
 ## Available options
 
 The following options should be passed to the container as environment variables using the `-e` flag.
