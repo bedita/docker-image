@@ -1,11 +1,13 @@
-### BEdita official Docker image
+BEdita official Docker image
+============================
 [![Docker Pulls](https://img.shields.io/docker/pulls/bedita/bedita.svg)](https://hub.docker.com/r/bedita/bedita/)
 
 This Docker image lets you run a BEdita instance easily and quickly, without need to configure a Webserver, installing a database, or struggling to set the correct file permissions.
 
 Even though it is meant only for **development purposes**, this might also serve as a _proof of concept_ for running BEdita in a dockerized environment.
 
-#### What’s in this image
+What’s in this image
+--------------------
 
 In this image you can expect to find:
 
@@ -13,11 +15,12 @@ In this image you can expect to find:
  - The BEdita modules [Books](https://github.com/bedita/books) and [Tickets](https://github.com/bedita/tickets) already installed and plugged-in.
  - The BEdita [Bootstrap frontend](https://github.com/bedita/bootstrap) already installed and available, ready to be used as a REST API frontend (see `GET /api/v1` for available endpoints).
 
-#### Getting started
+Getting started
+---------------
 
 Before getting started, you should obviously ensure you have a recent version of [Docker](https://www.docker.com/) installed on your machine.
 
-##### The easy way
+### The easy way
 
 1. Ensure you have Docker Compose installed on your local machine.
 2. Clone [this repository](https://github.com/bedita/docker-image).
@@ -28,7 +31,7 @@ Before getting started, you should obviously ensure you have a recent version of
 
 Be sure to replace any instance of `192.168.99.100` inside `docker-compose.yml` and in the URLs above with the actual IP of your Docker machine (if you’re running Boot2Docker on OS X, the default value should be fine).
 
-##### The “hardcore” way
+### The “hardcore” way
 
 First of all, you’ll need a MySQL container up and running:
 
@@ -62,7 +65,8 @@ Also, `BEDITA_CORE_HOST` should be set to a host that points to your Docker mach
 
 At this point, you should be able to navigate to http://manage.192.168.99.100.xip.io:8083 (or whatever you set your host to) and see your BEdita CMS login page (default user is `bedita` with password `bedita`). By using any other hostname that points to the same IP, using port `8083`, you will access your frontend. Hence, browsing http://192.168.99.100:8083/api/v1 you should see a JSON response listing the available REST API endpoints.
 
-#### Logging
+Logging
+-------
 
 Docker containers should write logs to the standard output. In order to accomplish this goal, BEdita log files are `tail`'d to the standard output with the help of [Supervisor](http://supervisord.org/) and [supervisor-stdout](https://github.com/coderanger/supervisor-stdout).
 
@@ -82,35 +86,36 @@ Unfortunately, logs are buffered, so it might take a short while before logged e
 
 Also, be careful not to remove log files from the BEdita backend Admin module, or `tail` will stop working, preventing later logs from showing in your console.
 
-#### Available options
+Available options
+-----------------
 
 The following options should be passed to the container as environment variables using the `-e` flag.
 
-##### `BEDITA_CORE_HOST` **(required)**
+### `BEDITA_CORE_HOST` **(required)**
 
 The host you want to use to access BEdita backend. Any other host pointing to the same IP will default to the frontend virtual host.
 
 For instance, if your Docker machine is running on IP `192.168.99.100`, you might set `-e BEDITA_CORE_HOST=manage.192.168.99.100.xip.io`.
 
-##### `BEDITA_MYSQL_HOST` **(required)**
+### `BEDITA_MYSQL_HOST` **(required)**
 
 This environment variable should be set to the host of the MySQL server you wish to use with your BEdita instance.
 
 For instance, if you linked a MySQL Docker container using the option `--link my_mysql_container:db`, you should set `-e BEDITA_MYSQL_HOST=db`.
 
-##### `BEDITA_MYSQL_NAME` **(required)**
+### `BEDITA_MYSQL_NAME` **(required)**
 
 This is the name of the database that you want to be used by BEdita.
 
 For instance, if you are running the official MySQL Docker image with the option `-e MYSQL_DATABASE=bedita_docker`, you might want to run the BEdita Docker image with the option `-e BEDITA_MYSQL_NAME=bedita_docker`.
 
-##### `BEDITA_MYSQL_USER`, `BEDITA_MYSQL_PASS` **(required)**
+### `BEDITA_MYSQL_USER`, `BEDITA_MYSQL_PASS` **(required)**
 
 These variables are used to pass MySQL user credentials.
 
 For instance, if you are running the official MySQL Docker image with the options `-e MYSQL_USER=bedita -e MYSQL_PASSWORD=my_bedita_password`, you will probably want to run the BEdita Docker image with the options `-e BEDITA_MYSQL_USER=bedita -e BEDITA_MYSQL_PASS=my_bedita_password`.
 
-##### `BEDITA_DEBUG` _(optional)_
+### `BEDITA_DEBUG` _(optional)_
 
 Use this variable to set BEdita debug level.
 
