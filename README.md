@@ -42,7 +42,7 @@ You may use `:latest` or `:4-cactus` tags, they have currently same effect.
 Easiest way to launch the container after the image has been successfully pulled is:
 
 ```bash
-docker run -p 8090:80 bedita/bedita:latest
+docker run -p 8090:80 bedita/bedita
 ```
 
 This will launch a BEdita instance that uses SQLite as its storage backend. It should become available at http://localhost:8090/home almost instantly.
@@ -84,12 +84,9 @@ The following options should be passed to the container as environment variables
 
 #### `BEDITA_API_KEY`
 
-Initial default **API KEY** on a newly created client application 
+Initial default **API KEY** on a newly created client application.
 
-
-The host you want to use to access BEdita backend. Any other host pointing to the same IP will default to the frontend virtual host.
-
-For instance, if your Docker machine is running on IP `192.168.99.100`, you might set `-e BEDITA_CORE_HOST=manage.192.168.99.100.xip.io`.
+You may use this **API KEY** to [use a client application with BEdita](https://docs.bedita.net/en/latest/authorization.html?#application-identification).
 
 #### `BEDITA_APP_NAME`
 
@@ -102,7 +99,6 @@ Option will be ignored if no `BEDITA_API_KEY` is present.
 Initial admin username.
 
 `BEDITA_ADMIN_PWD` MUST also be present in order for this option to be used 
-
 
 #### `BEDITA_ADMIN_PWD`
 
