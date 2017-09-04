@@ -1,0 +1,25 @@
+mysql:
+  image: mysql:5.6
+  environment:
+    - MYSQL_ROOT_PASSWORD=root123
+    - MYSQL_USER=bedita
+    - MYSQL_PASSWORD=bedita
+    - MYSQL_DATABASE=bedita
+  volumes:
+    - "be_mysql56:/var/lib/mysql"
+
+bedita:
+  image: bedita/bedita
+  environment:
+    - BEDITA_CORE_HOST=manage.192.168.99.100.xip.io
+    - BEDITA_DEBUG=2
+    - BEDITA_MYSQL_HOST=mysql
+    - BEDITA_MYSQL_USER=bedita
+    - BEDITA_MYSQL_PASS=bedita
+    - BEDITA_MYSQL_NAME=bedita
+  links:
+    - mysql
+  ports:
+    - "8083:80"
+  volumes:
+    - "be_files:/var/www/bedita/bedita-app/webroot/files"
