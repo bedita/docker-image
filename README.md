@@ -12,7 +12,7 @@ In this image you will find:
 
  - The latest version of [BEdita4](https://github.com/bedita/bedita) on current main branch `4-cactus`.
 
-If you're looking for the old BEdita4 image [read here](https://github.com/bedita/docker-image/blob/master/3-corylus/README.md).
+If you're looking for the old BEdita 3 image [read here](https://github.com/bedita/docker-image/blob/master/3-corylus/README.md).
 
 ## Available tags and `Dockerfile` links
 
