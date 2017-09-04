@@ -1,55 +1,32 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -eo pipefail
+shopt -s nullglob
 
-export BEDITA_CORE_LOGS="/var/www/bedita/bedita-app/tmp/logs"
-export BEDITA_FRONTEND_LOGS="/var/www/bedita/frontends/bootstrap/tmp/logs"
+if [ ! -z "${DATABASE_URL}" ]; then
+    DATABASE_HOST=$(php -r "echo parse_url(getenv('DATABASE_URL'), PHP_URL_HOST) . ':' . parse_url(getenv('DATABASE_URL'), PHP_URL_PORT);")
+    if [ "$DATABASE_HOST" != ":" ]; then
+        /wait-for-it.sh ${DATABASE_HOST} -s -t 0 -- echo '=====> Database Ready'
+    fi
+    bin/cake migrations migrate -p BEdita/Core
+    bin/cake migrations seed -p BEdita/Core --seed InitialSeed
 
-# Truncate log files.
-truncate -s0 $BEDITA_CORE_LOGS/{cleanup,debug,error,exception,warn}.log
-truncate -s0 $BEDITA_FRONTEND_LOGS/{cleanup,debug,error,exception,warn}.log
+    if [ ! -z "${BEDITA_API_KEY}" ]; then
+        bin/cake migrations seed -p BEdita/Core --seed ApplicationFromEnvSeed
+    fi
 
-# Set permissions
-chmod -R 777 /var/www/bedita/bedita-app/tmp
-chmod -R 777 /var/www/bedita/bedita-app/webroot/files
-chmod -R 777 /var/www/bedita/frontends/bootstrap/tmp
+    if [[ ! -z "${BEDITA_ADMIN_USR}" && ! -z "${BEDITA_ADMIN_PWD}" ]]; then
+        bin/cake migrations seed -p BEdita/Core --seed AdminFromEnvSeed
+    fi
 
-if [ "$1" != 'bash' ] && [ "$1" != '/bin/bash' ]; then
-    # Chech that all required variables are set.
-    requiredVars="BEDITA_CORE_HOST BEDITA_MYSQL_HOST BEDITA_MYSQL_NAME BEDITA_MYSQL_USER BEDITA_MYSQL_PASS"
-    for requiredVar in $requiredVars; do
-        if [ -z "${!requiredVar}" ]; then
-            echo >&2 "Did you forget to set the ${requiredVar} environment variable?"
-            exit 1
-        fi
-    done
+    chmod -R a+rwX tmp
+    chmod -R a+rwX logs
 
-    # Check if container has just been created.
-    if [ ! -f /var/www/bedita/bedita-app/config/core.php ]; then
-        # Wait for MySQL server to be up.
-        ATTEMPTS=30
-        for i in {30..0}; do
-            if mysqladmin ping -h"${BEDITA_MYSQL_HOST}" --silent; then
-                break
-            fi
-            echo 'Waiting for MySQL server...'
-            sleep 1
-        done
-        if [ "$i" = 0 ]; then
-            echo >&2 'MySQL server unavailable!'
-            exit 1
-        fi
-
-        # Copy configuration files.
-        cd /var/www/bedita
-        cp /var/www/bedita/bedita-app/config/core.php.docker /var/www/bedita/bedita-app/config/core.php
-
-        # Initialize DB.
-        yes | ./cake.sh bedita initDb
-
-        # Plug-in modules.
-        for module in $BEDITA_MODULES; do
-            yes | ./cake.sh module plug -name $module
-        done
+    DATABASE_VENDOR=$(php -r "echo explode('://', getenv('DATABASE_URL'))[0];")
+    echo "=====> Vendor: ${DATABASE_VENDOR}"
+    if [ "$DATABASE_VENDOR" = "sqlite" ]; then
+        DATABASE_PATH=$(php -r "echo substr(parse_url(preg_replace('/^([\\w\\\\\\]+)/', 'file', getenv('DATABASE_URL')), PHP_URL_PATH), 1);")
+        echo "=====> Path: ${DATABASE_PATH}"
+        chmod a+rwx logs ${DATABASE_PATH}
     fi
 fi
 
